@@ -149,6 +149,7 @@ import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { expensesApi, categoriesApi, expenseTypesApi } from '../services/api'
 import type { Expense, ExpenseCreate, ExpenseUpdate, Category, ExpenseType } from '../types/api'
+import type { QTableProps } from 'quasar'
 
 const $q = useQuasar()
 
@@ -167,11 +168,28 @@ const filters = ref({
   expense_type_id: 0
 })
 
+// const pagination = ref<{
+//   sortBy: string
+//   descending: boolean
+//   page: number
+//   rowsPerPage: number
+//   rowsNumber: number
+// }>({
+//   sortBy: '',
+//   descending: false,
+//   page: 1,
+//   rowsPerPage: 10,
+//   rowsNumber: 0
+// })
+
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
-  rowsNumber: 0
+  rowsNumber: 0,
+  sortBy: '',
+  descending: false
 })
+
 
 const form = ref<ExpenseCreate>({
   amount: 0,
@@ -196,7 +214,8 @@ const columns = [
 const loadExpenses = async () => {
   loading.value = true
   try {
-    const params: Record<string, any> = {
+    //const params: Record<string, any> = {
+    const params: Record<string, unknown> = {
       skip: (pagination.value.page - 1) * pagination.value.rowsPerPage,
       limit: pagination.value.rowsPerPage
     }
@@ -283,7 +302,7 @@ const editExpense = (expense: Expense) => {
 
 const deleteExpense = async (id: number) => {
   try {
-    const result = await $q.dialog({
+    const result = $q.dialog({
       title: 'Подтверждение',
       message: 'Вы уверены, что хотите удалить этот расход?',
       cancel: true,
@@ -317,8 +336,35 @@ const resetForm = () => {
   }
 }
 
-const onRequest = (props: { pagination: typeof pagination.value }) => {
-  pagination.value = props.pagination
+
+// const onRequest = (props: { pagination: typeof pagination.value }) => {
+//   const onRequest =  (props: QTableRequestProp) => {
+
+//   pagination.value = props.pagination
+//   void loadExpenses()
+// }
+
+// const onRequest = (props: QTableRequestProp) => {
+//   pagination.value = {
+//     page: props.pagination.page,
+//     rowsPerPage: props.pagination.rowsPerPage,
+//     rowsNumber: props.pagination.rowsNumber ?? 0, // гарантируем число
+//     sortBy: props.pagination.sortBy,
+//     descending: props.pagination.descending
+//   }
+
+//   void loadExpenses()
+// }
+
+const onRequest: QTableProps['onRequest'] = (props) => {
+  pagination.value = {
+    page: props.pagination.page,
+    rowsPerPage: props.pagination.rowsPerPage,
+    rowsNumber: props.pagination.rowsNumber ?? 0,
+    sortBy: props.pagination.sortBy ?? '',
+    descending: props.pagination.descending ?? false
+  }
+
   void loadExpenses()
 }
 

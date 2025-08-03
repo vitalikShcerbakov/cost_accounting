@@ -160,7 +160,7 @@ const loadMonthlySummary = async () => {
 const loadCategorySummary = async () => {
   categoryLoading.value = true
   try {
-    const params: Record<string, any> = {}
+    const params: Record<string, unknown> = {};
     if (categoryFilters.value.start_date) params.start_date = categoryFilters.value.start_date
     if (categoryFilters.value.end_date) params.end_date = categoryFilters.value.end_date
 

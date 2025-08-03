@@ -113,3 +113,15 @@ export interface IncomeUpdate {
   date?: string
   category_id?: number
 } 
+
+export interface QTableRequestProp {
+  pagination: {
+    sortBy: string
+    descending: boolean
+    page: number
+    rowsPerPage: number
+    rowsNumber: number
+  }
+  filter?: string
+  getCellValue: (col: unknown, row: unknown) => unknown
+}

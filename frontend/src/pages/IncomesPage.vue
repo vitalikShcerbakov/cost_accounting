@@ -130,6 +130,7 @@ import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { incomesApi, categoriesApi } from '../services/api'
 import type { Income, IncomeCreate, IncomeUpdate, Category } from '../types/api'
+import type { QTableProps } from 'quasar'
 
 const $q = useQuasar()
 
@@ -149,7 +150,9 @@ const filters = ref({
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
-  rowsNumber: 0
+  rowsNumber: 0,
+  sortBy: '',
+  descending: false
 })
 
 const form = ref<IncomeCreate>({
@@ -173,7 +176,8 @@ const columns = [
 const loadIncomes = async () => {
   loading.value = true
   try {
-    const params: Record<string, any> = {
+    // const params: Record<string, any> = {
+    const params: Record<string, unknown> = {
       skip: (pagination.value.page - 1) * pagination.value.rowsPerPage,
       limit: pagination.value.rowsPerPage
     }
@@ -246,7 +250,7 @@ const editIncome = (income: Income) => {
 
 const deleteIncome = async (id: number) => {
   try {
-    const result = await $q.dialog({
+    const result = $q.dialog({
       title: 'Подтверждение',
       message: 'Вы уверены, что хотите удалить этот доход?',
       cancel: true,
@@ -279,8 +283,20 @@ const resetForm = () => {
   }
 }
 
-const onRequest = (props: { pagination: typeof pagination.value }) => {
-  pagination.value = props.pagination
+// const onRequest = (props: { pagination: typeof pagination.value }) => {
+//   pagination.value = props.pagination
+//   void loadIncomes()
+// }
+
+const onRequest: QTableProps['onRequest'] = (props) => {
+  pagination.value = {
+    page: props.pagination.page,
+    rowsPerPage: props.pagination.rowsPerPage,
+    rowsNumber: props.pagination.rowsNumber ?? 0,
+    sortBy: props.pagination.sortBy ?? '',
+    descending: props.pagination.descending ?? false
+  }
+
   void loadIncomes()
 }
 

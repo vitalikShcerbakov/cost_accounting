@@ -155,7 +155,7 @@ const editCategory = (category: Category) => {
 
 const deleteCategory = async (id: number) => {
   try {
-    const result = await $q.dialog({
+    const result = $q.dialog({
       title: 'Подтверждение',
       message: 'Вы уверены, что хотите удалить эту категорию?',
       cancel: true,
