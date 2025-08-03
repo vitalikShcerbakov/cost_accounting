@@ -1,0 +1,8 @@
+venv
+venv/
+.vscode
+dist
+*.db
+.env
+env
+__pycache__/
