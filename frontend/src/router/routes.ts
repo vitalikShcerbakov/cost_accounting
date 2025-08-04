@@ -43,3 +43,5 @@ const routes: RouteRecordRaw[] = [
     meta: { verboseName: '' },
   },
 ];
+export default routes;
+
