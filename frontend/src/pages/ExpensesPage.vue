@@ -168,20 +168,6 @@ const filters = ref({
   expense_type_id: 0
 })
 
-// const pagination = ref<{
-//   sortBy: string
-//   descending: boolean
-//   page: number
-//   rowsPerPage: number
-//   rowsNumber: number
-// }>({
-//   sortBy: '',
-//   descending: false,
-//   page: 1,
-//   rowsPerPage: 10,
-//   rowsNumber: 0
-// })
-
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -335,26 +321,6 @@ const resetForm = () => {
     expense_type_id: 0
   }
 }
-
-
-// const onRequest = (props: { pagination: typeof pagination.value }) => {
-//   const onRequest =  (props: QTableRequestProp) => {
-
-//   pagination.value = props.pagination
-//   void loadExpenses()
-// }
-
-// const onRequest = (props: QTableRequestProp) => {
-//   pagination.value = {
-//     page: props.pagination.page,
-//     rowsPerPage: props.pagination.rowsPerPage,
-//     rowsNumber: props.pagination.rowsNumber ?? 0, // гарантируем число
-//     sortBy: props.pagination.sortBy,
-//     descending: props.pagination.descending
-//   }
-
-//   void loadExpenses()
-// }
 
 const onRequest: QTableProps['onRequest'] = (props) => {
   pagination.value = {
