@@ -120,7 +120,7 @@
               option-label="name"
               option-value="id"
               label="Категория"
-              :rules="[val => val > 0 || 'Выберите категорию']"
+              :rules="[val => val > ' ' || 'Выберите категорию']"
               required
             />
             <q-select
