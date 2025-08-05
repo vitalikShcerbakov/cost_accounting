@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { Dialog, useQuasar } from 'quasar'
 import { categoriesApi } from '../services/api'
 import type { Category, CategoryCreate, CategoryUpdate } from '../types/api'
 
@@ -101,6 +101,17 @@ const columns = [
 ]
 
 // Методы
+function confirmDialog(message: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    Dialog.create({
+      title: 'Подтверждение',
+      message,
+      cancel: true,
+      persistent: true
+    }).onOk(resolve).onCancel(reject)
+  })
+}
+
 const loadCategories = async () => {
   loading.value = true
   try {
@@ -153,31 +164,30 @@ const editCategory = (category: Category) => {
   showDialog.value = true
 }
 
-const deleteCategory = async (id: number) => {
-  try {
-    const result = $q.dialog({
-      title: 'Подтверждение',
-      message: 'Вы уверены, что хотите удалить эту категорию?',
-      cancel: true,
-      persistent: true
+const deleteCategory = (id: number) => {
+  confirmDialog('Вы уверены, что хотите удалить эту категорию?')
+    .then(async () => {
+      try {
+        await categoriesApi.delete(id)
+        await loadCategories()
+        $q.notify({
+          type: 'positive',
+          message: 'Категория успешно удалена'
+        })
+      } catch {
+        $q.notify({
+          type: 'negative',
+          message: 'Ошибка удаления категории'
+        })
+      }
     })
-
-    if (result) {
-      await categoriesApi.delete(id)
-      await loadCategories()
+    .catch(() => {
       $q.notify({
-        type: 'positive',
-        message: 'Категория успешно удалена'
+        type: 'info',
+        message: 'Удаление отменено'
       })
-    }
-  } catch {
-    $q.notify({
-      type: 'negative',
-      message: 'Ошибка удаления категории'
     })
-  }
 }
-
 const resetForm = () => {
   editingCategory.value = null
   form.value = {
