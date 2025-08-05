@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <h3>test доходы</h3>
     <div class="row q-col-gutter-md">
       <!-- Заголовок и фильтры -->
       <div class="col-12">
@@ -89,7 +90,7 @@
               v-model.number="form.amount"
               label="Сумма"
               type="number"
-              :rules="[val => val > 0 || 'Сумма должна быть больше 0']"
+              :rules="[val => val > 0 || 'Сумма должна быть больше 01']"
               required
             />
             <q-input

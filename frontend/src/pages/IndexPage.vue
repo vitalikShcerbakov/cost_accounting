@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <h3>test индекс</h3>
     <div class="row q-col-gutter-md">
       <!-- Статистика -->
       <div class="col-12">
@@ -101,7 +102,7 @@
               v-model.number="newIncome.amount"
               label="Сумма"
               type="number"
-              :rules="[val => val > 0 || 'Сумма должна быть больше 0']"
+              :rules="[val => val > 0 || 'Сумма должна быть больше 0 index добав. доход']"
               required
             />
             <q-input
@@ -124,6 +125,8 @@
               label="Категория"
               :rules="[val => val > ' ' || 'Выберите категорию']"
               required
+              emit-value
+              map-options
             />
           </q-form>
         </q-card-section>
@@ -143,6 +146,7 @@
         </q-card-section>
 
         <q-card-section>
+          {{newExpense}}
           <q-form @submit="addExpense" class="q-gutter-md">
             <q-input
               v-model.number="newExpense.amount"
@@ -170,6 +174,8 @@
               option-value="id"
               label="Категория"
               :rules="[val => val > ' ' || 'Выберите категорию']"
+              emit-value
+              map-options
               required
             />
             <q-select
