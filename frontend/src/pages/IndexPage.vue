@@ -172,7 +172,7 @@
               option-label="name"
               option-value="id"
               label="Категория"
-              :rules="[val => val > ' ' || 'Выберите категорию']"
+              :rules="[val => val > '' || 'Выберите категорию']"
               emit-value
               map-options
               required
@@ -183,7 +183,9 @@
               option-label="name"
               option-value="id"
               label="Тип расхода"
-              :rules="[val => val > 0 || 'Выберите тип расхода']"
+              :rules="[val => val > '' || 'Выберите тип расхода']"
+              emit-value
+              map-options
               required
             />
           </q-form>
