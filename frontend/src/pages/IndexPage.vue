@@ -275,18 +275,17 @@ const loadData = async () => {
     })
   }
 }
-
 const addIncome = async () => {
   try {
-    await incomesApi.create(newIncome.value)
     await loadData()
     showIncomeDialog.value = false
-    newIncome.value = {
-      amount: 0,
-      description: '',
-      date: new Date().toISOString().split('T')[0] || '',
-      category_id: 0
+    const obj = {
+      amount: newIncome.value.amount,
+      description: newIncome.value.description,
+      date: newIncome.value.date + ' ' + new Date().toISOString().split('T')[1],
+      category_id: newIncome.value.category_id
     }
+    await incomesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Доход успешно добавлен'
@@ -301,16 +300,23 @@ const addIncome = async () => {
 
 const addExpense = async () => {
   try {
-    await expensesApi.create(newExpense.value)
     await loadData()
     showExpenseDialog.value = false
-    newExpense.value = {
-      amount: 0,
-      description: '',
-      date: new Date().toISOString().split('T')[0] || '',
-      category_id: 0,
-      expense_type_id: 0
+    const timeStr = new Date().toISOString().split('T')[1]
+    // const timeNow = timeStr.substring(0, timeStr.length - 1)
+    if (timeStr) {
+      // const timeNow = timeStr.replace(/.$/, '')
+      const timeNow = timeStr.substring(0, timeStr.length - 1)
+      console.log('fddfdf', timeNow)
     }
+    const obj = {
+      amount: newExpense.value.amount,
+      description: newExpense.value.description,
+      date: newExpense.value.date + ' ' + timeStr,
+      category_id: newExpense.value.category_id,
+      expense_type_id: newExpense.value.expense_type_id,
+    }
+        await expensesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Расход успешно добавлен'

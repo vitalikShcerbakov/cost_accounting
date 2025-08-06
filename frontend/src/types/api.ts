@@ -86,7 +86,7 @@ export interface ExpenseTypeUpdate {
 
 export interface ExpenseCreate {
   amount: number
-  description?: string
+  description: string
   date: string
   category_id: number
   expense_type_id: number
@@ -102,7 +102,7 @@ export interface ExpenseUpdate {
 
 export interface IncomeCreate {
   amount: number
-  description?: string
+  description: string
   date: string
   category_id: number
 }

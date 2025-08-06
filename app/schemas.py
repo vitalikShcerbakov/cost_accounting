@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from datetime import datetime, date
+from datetime import datetime
 
 # Category schemas
 class CategoryBase(BaseModel):
@@ -77,7 +77,7 @@ class Expense(ExpenseBase):
 class IncomeBase(BaseModel):
     amount: float = Field(..., gt=0)
     description: Optional[str] = None
-    date: date
+    date: datetime
     category_id: int
 
 class IncomeCreate(IncomeBase):
