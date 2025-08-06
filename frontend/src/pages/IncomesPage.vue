@@ -129,7 +129,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import { incomesApi, categoriesApi } from '../services/api'
+import { incomesApi, categoriesIncomeApi } from '../services/api'
 import type { Income, IncomeCreate, IncomeUpdate, Category } from '../types/api'
 import type { QTableProps } from 'quasar'
 
@@ -177,7 +177,6 @@ const columns = [
 const loadIncomes = async () => {
   loading.value = true
   try {
-    // const params: Record<string, any> = {
     const params: Record<string, unknown> = {
       skip: (pagination.value.page - 1) * pagination.value.rowsPerPage,
       limit: pagination.value.rowsPerPage
@@ -201,7 +200,7 @@ const loadIncomes = async () => {
 
 const loadCategories = async () => {
   try {
-    const response = await categoriesApi.getAll()
+    const response = await categoriesIncomeApi.getAll()
     categories.value = response.data
   } catch {
     $q.notify({
@@ -283,11 +282,6 @@ const resetForm = () => {
     category_id: 0
   }
 }
-
-// const onRequest = (props: { pagination: typeof pagination.value }) => {
-//   pagination.value = props.pagination
-//   void loadIncomes()
-// }
 
 const onRequest: QTableProps['onRequest'] = (props) => {
   pagination.value = {

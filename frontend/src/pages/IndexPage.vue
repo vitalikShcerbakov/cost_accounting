@@ -118,7 +118,7 @@
             />
             <q-select
               v-model="newIncome.category_id"
-              :options="categories"
+              :options="categoriesIncome"
               option-label="name"
               option-value="id"
               label="Категория"
@@ -168,7 +168,7 @@
             />
             <q-select
               v-model="newExpense.category_id"
-              :options="categories"
+              :options="categoriesExpense"
               option-label="name"
               option-value="id"
               label="Категория"
@@ -203,13 +203,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import { categoriesApi, expenseTypesApi, incomesApi, expensesApi } from '../services/api'
+import { categoriesExpenseApi, expenseTypesApi, incomesApi, expensesApi, categoriesIncomeApi } from '../services/api'
 import type { Category, ExpenseType, Income, IncomeCreate, Expense, ExpenseCreate } from '../types/api'
 
 const $q = useQuasar()
 
 // Реактивные данные
-const categories = ref<Category[]>([])
+const categoriesExpense = ref<Category[]>([])
+const categoriesIncome = ref<Category[]>([])
 const expenseTypes = ref<ExpenseType[]>([])
 const recentIncomes = ref<Income[]>([])
 const recentExpenses = ref<Expense[]>([])
@@ -257,14 +258,16 @@ const monthlyExpenses = computed(() => {
 // Методы
 const loadData = async () => {
   try {
-    const [categoriesRes, expenseTypesRes, incomesRes, expensesRes] = await Promise.all([
-      categoriesApi.getAll(),
+    const [categoriesExpenseRes, categoriesIncomeRes, expenseTypesRes, incomesRes, expensesRes] = await Promise.all([
+      categoriesExpenseApi.getAll(),
+      categoriesIncomeApi.getAll(),
       expenseTypesApi.getAll(),
       incomesApi.getAll({ limit: 5 }),
       expensesApi.getAll({ limit: 5 })
     ])
     
-    categories.value = categoriesRes.data
+    categoriesExpense.value = categoriesExpenseRes.data
+    categoriesIncome.value = categoriesIncomeRes.data
     expenseTypes.value = expenseTypesRes.data
     recentIncomes.value = incomesRes.data
     recentExpenses.value = expensesRes.data

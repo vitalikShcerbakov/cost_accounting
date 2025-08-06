@@ -26,12 +26,21 @@ const api = axios.create({
 })
 
 // Categories API
-export const categoriesApi = {
-  getAll: () => api.get<Category[]>('/categories/'),
-  getById: (id: number) => api.get<Category>(`/categories/${id}`),
-  create: (data: CategoryCreate) => api.post<Category>('/categories/', data),
-  update: (id: number, data: CategoryUpdate) => api.put<Category>(`/categories/${id}`, data),
-  delete: (id: number) => api.delete(`/categories/${id}`)
+export const categoriesExpenseApi = {
+  getAll: () => api.get<Category[]>('/categories_expense/'),
+  getById: (id: number) => api.get<Category>(`/categories_expense/${id}`),
+  create: (data: CategoryCreate) => api.post<Category>('/categories_expense/', data),
+  update: (id: number, data: CategoryUpdate) => api.put<Category>(`/categories_expense/${id}`, data),
+  delete: (id: number) => api.delete(`/categories_expense/${id}`)
+}
+
+// Categories API
+export const categoriesIncomeApi = {
+  getAll: () => api.get<Category[]>('/categories_income/'),
+  getById: (id: number) => api.get<Category>(`/categories_income/${id}`),
+  create: (data: CategoryCreate) => api.post<Category>('/categories_income/', data),
+  update: (id: number, data: CategoryUpdate) => api.put<Category>(`/categories_income/${id}`, data),
+  delete: (id: number) => api.delete(`/categories_income/${id}`)
 }
 
 // Expense Types API

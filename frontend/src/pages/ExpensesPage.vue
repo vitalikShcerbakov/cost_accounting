@@ -147,7 +147,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import { expensesApi, categoriesApi, expenseTypesApi } from '../services/api'
+import { expensesApi, categoriesExpenseApi, expenseTypesApi } from '../services/api'
 import type { Expense, ExpenseCreate, ExpenseUpdate, Category, ExpenseType } from '../types/api'
 import type { QTableProps } from 'quasar'
 
@@ -225,7 +225,7 @@ const loadExpenses = async () => {
 
 const loadCategories = async () => {
   try {
-    const response = await categoriesApi.getAll()
+    const response = await categoriesExpenseApi.getAll()
     categories.value = response.data
   } catch {
     $q.notify({

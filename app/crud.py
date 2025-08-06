@@ -5,21 +5,21 @@ from datetime import datetime, date
 from app import models, schemas
 
 # Category expense CRUD operations
-def get_category(db: Session, category_id: int):
+def get_category_expense(db: Session, category_id: int):
     return db.query(models.CategoryExpense).filter(models.CategoryExpense.id == category_id).first()
 
-def get_categories(db: Session, skip: int = 0, limit: int = 100):
+def get_categories_expense(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.CategoryExpense).offset(skip).limit(limit).all()
 
-def create_category(db: Session, category: schemas.CategoryCreate):
+def create_category_expense(db: Session, category: schemas.CategoryCreate):
     db_category = models.CategoryExpense(**category.dict())
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
     return db_category
 
-def update_category(db: Session, category_id: int, category: schemas.CategoryUpdate):
-    db_category = get_category(db, category_id)
+def update_category_expense(db: Session, category_id: int, category: schemas.CategoryUpdate):
+    db_category = get_category_expense(db, category_id)
     if db_category:
         update_data = category.dict(exclude_unset=True)
         for field, value in update_data.items():
@@ -28,8 +28,8 @@ def update_category(db: Session, category_id: int, category: schemas.CategoryUpd
         db.refresh(db_category)
     return db_category
 
-def delete_category(db: Session, category_id: int):
-    db_category = get_category(db, category_id)
+def delete_category_expense(db: Session, category_id: int):
+    db_category = get_category_expense(db, category_id)
     if db_category:
         db.delete(db_category)
         db.commit()
@@ -37,21 +37,21 @@ def delete_category(db: Session, category_id: int):
 
 
 # Category income CRUD operations
-def get_category(db: Session, category_id: int):
+def get_category_income(db: Session, category_id: int):
     return db.query(models.CategoryIncome).filter(models.CategoryIncome.id == category_id).first()
 
-def get_categories(db: Session, skip: int = 0, limit: int = 100):
+def get_categories_income(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.CategoryIncome).offset(skip).limit(limit).all()
 
-def create_category(db: Session, category: schemas.CategoryCreate):
+def create_category_income(db: Session, category: schemas.CategoryCreate):
     db_category = models.CategoryIncome(**category.dict())
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
     return db_category
 
-def update_category(db: Session, category_id: int, category: schemas.CategoryUpdate):
-    db_category = get_category(db, category_id)
+def update_category_income(db: Session, category_id: int, category: schemas.CategoryUpdate):
+    db_category = get_category_income(db, category_id)
     if db_category:
         update_data = category.dict(exclude_unset=True)
         for field, value in update_data.items():
@@ -60,8 +60,8 @@ def update_category(db: Session, category_id: int, category: schemas.CategoryUpd
         db.refresh(db_category)
     return db_category
 
-def delete_category(db: Session, category_id: int):
-    db_category = get_category(db, category_id)
+def delete_category_income(db: Session, category_id: int):
+    db_category = get_category_income(db, category_id)
     if db_category:
         db.delete(db_category)
         db.commit()

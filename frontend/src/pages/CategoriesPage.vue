@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Dialog, useQuasar } from 'quasar'
-import { categoriesApi } from '../services/api'
+import { categoriesExpenseApi } from '../services/api'
 import type { Category, CategoryCreate, CategoryUpdate } from '../types/api'
 
 const $q = useQuasar()
@@ -115,7 +115,7 @@ function confirmDialog(message: string): Promise<void> {
 const loadCategories = async () => {
   loading.value = true
   try {
-    const response = await categoriesApi.getAll()
+    const response = await categoriesExpenseApi.getAll()
     categories.value = response.data
   } catch {
     $q.notify({
@@ -130,13 +130,13 @@ const loadCategories = async () => {
 const saveCategory = async () => {
   try {
     if (editingCategory.value) {
-      await categoriesApi.update(editingCategory.value.id, form.value as CategoryUpdate)
+      await categoriesExpenseApi.update(editingCategory.value.id, form.value as CategoryUpdate)
       $q.notify({
         type: 'positive',
         message: 'Категория успешно обновлена'
       })
     } else {
-      await categoriesApi.create(form.value)
+      await categoriesExpenseApi.create(form.value)
       $q.notify({
         type: 'positive',
         message: 'Категория успешно добавлена'
@@ -168,7 +168,7 @@ const deleteCategory = (id: number) => {
   confirmDialog('Вы уверены, что хотите удалить эту категорию?')
     .then(async () => {
       try {
-        await categoriesApi.delete(id)
+        await categoriesExpenseApi.delete(id)
         await loadCategories()
         $q.notify({
           type: 'positive',
