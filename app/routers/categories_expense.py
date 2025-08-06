@@ -4,7 +4,7 @@ from typing import List
 from app.database import get_db
 from app import crud, schemas
 
-router = APIRouter(prefix="/categories", tags=["categories"])
+router = APIRouter(prefix="/categories_expense", tags=["categories_expense"])
 
 @router.get("/", response_model=List[schemas.Category])
 def read_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

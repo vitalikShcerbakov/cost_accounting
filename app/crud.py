@@ -4,15 +4,15 @@ from typing import List, Optional
 from datetime import datetime, date
 from app import models, schemas
 
-# Category CRUD operations
+# Category expense CRUD operations
 def get_category(db: Session, category_id: int):
-    return db.query(models.Category).filter(models.Category.id == category_id).first()
+    return db.query(models.CategoryExpense).filter(models.CategoryExpense.id == category_id).first()
 
 def get_categories(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Category).offset(skip).limit(limit).all()
+    return db.query(models.CategoryExpense).offset(skip).limit(limit).all()
 
 def create_category(db: Session, category: schemas.CategoryCreate):
-    db_category = models.Category(**category.dict())
+    db_category = models.CategoryExpense(**category.dict())
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
@@ -34,6 +34,39 @@ def delete_category(db: Session, category_id: int):
         db.delete(db_category)
         db.commit()
     return db_category
+
+
+# Category income CRUD operations
+def get_category(db: Session, category_id: int):
+    return db.query(models.CategoryIncome).filter(models.CategoryIncome.id == category_id).first()
+
+def get_categories(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.CategoryIncome).offset(skip).limit(limit).all()
+
+def create_category(db: Session, category: schemas.CategoryCreate):
+    db_category = models.CategoryIncome(**category.dict())
+    db.add(db_category)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+def update_category(db: Session, category_id: int, category: schemas.CategoryUpdate):
+    db_category = get_category(db, category_id)
+    if db_category:
+        update_data = category.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_category, field, value)
+        db.commit()
+        db.refresh(db_category)
+    return db_category
+
+def delete_category(db: Session, category_id: int):
+    db_category = get_category(db, category_id)
+    if db_category:
+        db.delete(db_category)
+        db.commit()
+    return db_category
+
 
 # ExpenseType CRUD operations
 def get_expense_type(db: Session, expense_type_id: int):
@@ -195,8 +228,8 @@ def get_monthly_summary(db: Session, year: int, month: int):
 
 def get_category_summary(db: Session, start_date: Optional[date] = None, end_date: Optional[date] = None):
     query = db.query(
-        models.Category.id,
-        models.Category.name,
+        models.CategoryExpense.id,
+        models.CategoryExpense.name,
         func.sum(models.Expense.amount).label('total_amount'),
         func.count(models.Expense.id).label('count')
     ).join(models.Expense)
@@ -206,4 +239,4 @@ def get_category_summary(db: Session, start_date: Optional[date] = None, end_dat
     if end_date:
         query = query.filter(models.Expense.date <= end_date)
     
-    return query.group_by(models.Category.id, models.Category.name).all() 
+    return query.group_by(models.CategoryExpense.id, models.CategoryExpense.name).all() 

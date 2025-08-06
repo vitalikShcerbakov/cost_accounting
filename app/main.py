@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine
 from app import models
-from app.routers import categories, expense_types, expenses, incomes, summary
+from app.routers import categories_expense, expense_types, expenses, incomes, summary
 
 # Создание таблиц в базе данных
 models.Base.metadata.create_all(bind=engine)
@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Подключение роутеров
-app.include_router(categories.router)
+app.include_router(categories_expense.router)
 app.include_router(expense_types.router)
 app.include_router(expenses.router)
 app.include_router(incomes.router)
