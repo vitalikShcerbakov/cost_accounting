@@ -67,7 +67,7 @@ class Expense(ExpenseBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
-    category: Category
+    categories_expense: Category
     expense_type: ExpenseType
     
     class Config:
@@ -93,7 +93,7 @@ class Income(IncomeBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
-    category: Category
+    categories_income: Category
     
     class Config:
         from_attributes = True
@@ -111,4 +111,4 @@ class CategorySummary(BaseModel):
     category_id: int
     category_name: str
     total_amount: float
-    count: int 
+    count: int
