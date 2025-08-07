@@ -42,6 +42,8 @@
                   option-label="name"
                   option-value="id"
                   label="Категория"
+                  emit-value
+                  map-options
                   clearable
                 />
               </div>
@@ -112,6 +114,8 @@
               option-value="id"
               label="Категория"
               :rules="[val => val > ' ' || 'Выберите категорию']"
+              emit-value
+              map-options
               required
             />
           </q-form>
@@ -212,6 +216,7 @@ const loadCategories = async () => {
 
 const saveIncome = async () => {
   try {
+    form.value.date = form.value.date + ' ' + new Date().toISOString().split('T')[1]  // подумать как заменить кастыль
     if (editingIncome.value) {
       await incomesApi.update(editingIncome.value.id, form.value as IncomeUpdate)
       $q.notify({

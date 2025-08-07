@@ -99,7 +99,7 @@
               v-model.number="form.amount"
               label="Сумма"
               type="number"
-              :rules="[val => val > 0 || 'Сумма должна быть больше 0']"
+              :rules="[val => val > '' || 'Сумма должна быть больше 0']"
               required
             />
             <q-input
@@ -121,6 +121,8 @@
               option-value="id"
               label="Категория"
               :rules="[val => val > ' ' || 'Выберите категорию']"
+              emit-value
+              map-options
               required
             />
             <q-select
@@ -130,6 +132,8 @@
               option-value="id"
               label="Тип расхода"
               :rules="[val => val > 0 || 'Выберите тип расхода']"
+              emit-value
+              map-options
               required
             />
           </q-form>
@@ -249,8 +253,11 @@ const loadExpenseTypes = async () => {
 
 const saveExpense = async () => {
   try {
+    form.value.date = form.value.date + ' ' + new Date().toISOString().split('T')[1]  // подумать как заменить кастыль
     if (editingExpense.value) {
-      await expensesApi.update(editingExpense.value.id, form.value as ExpenseUpdate)
+      await expensesApi.update(
+        editingExpense.value.id,
+      form.value as ExpenseUpdate)
       $q.notify({
         type: 'positive',
         message: 'Расход успешно обновлен'

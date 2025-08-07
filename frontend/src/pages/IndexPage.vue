@@ -145,7 +145,6 @@
         </q-card-section>
 
         <q-card-section>
-          {{newExpense}}
           <q-form @submit="addExpense" class="q-gutter-md">
             <q-input
               v-model.number="newExpense.amount"
@@ -335,5 +334,6 @@ const addExpense = async () => {
 // Загрузка данных при монтировании
 onMounted(() => {
   void loadData()
+  newExpense.value.expense_type_id = 1
 })
 </script> 
