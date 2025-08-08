@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     database_url: str = "sqlite:///./cost_accounting.db"
+    # database_url = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     
     class Config:
         env_file = ".env"
@@ -23,4 +24,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close() 
+        db.close()
