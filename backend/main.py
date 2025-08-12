@@ -1,12 +1,9 @@
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from backend.database import engine
-from backend import models
 from backend.routers import categories_expense, categories_income, expense_types, expenses, incomes, summary
 
 # Создание таблиц в базе данных
@@ -19,9 +16,9 @@ app = FastAPI(
 )
 
 # Определяем путь к статике фронтенда
-frontend_dist = Path(__file__).parent / "static" / "dist" / "spa"
+# frontend_dist = Path(__file__).parent / "static" / "dist" / "spa"
 
-app.mount('/static', StaticFiles(directory=str(frontend_dist), html=True), name='static')
+# app.mount('/static', StaticFiles(directory=str(frontend_dist), html=True), name='static')
 
 
 # Настройка CORS для фронтенда
