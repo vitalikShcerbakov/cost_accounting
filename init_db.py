@@ -3,8 +3,8 @@
 Скрипт для инициализации базы данных с начальными данными
 """
 
-from app.database import SessionLocal, engine
-from app import models, crud, schemas
+from backend.database import SessionLocal, engine
+from backend import models, crud, schemas
 from datetime import datetime
 
 def init_db():

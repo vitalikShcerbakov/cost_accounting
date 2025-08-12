@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from app.database import Base
-from app.models import CategoryExpense, CategoryIncome, ExpenseType, Expense, Income
+from backend.database import Base
+from backend.models import CategoryExpense, CategoryIncome, ExpenseType, Expense, Income
 
 
 load_dotenv()

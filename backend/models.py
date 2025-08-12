@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Boolean, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.database import Base
+from backend.database import Base
 
 class CategoryExpense(Base):
     __tablename__ = "categories_expenses"

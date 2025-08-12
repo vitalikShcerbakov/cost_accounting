@@ -5,9 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.database import engine
-from app import models
-from app.routers import categories_expense, categories_income, expense_types, expenses, incomes, summary
+from backend.database import engine
+from backend import models
+from backend.routers import categories_expense, categories_income, expense_types, expenses, incomes, summary
 
 # Создание таблиц в базе данных
 # models.Base.metadata.create_all(bind=engine)
