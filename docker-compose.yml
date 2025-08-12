@@ -2,16 +2,26 @@ version: '3.8'
 
 services:
   backend:
-    build: ./app/
+    container_name: backend_accounting
+    build: ./backend/
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app/app  # Для разработки - монтируем код
+      - static:/app/static
 
   frontend:
     container_name: frontend_accounting
     build: ./frontend/
     volumes:
-      - ./frontend:/app/frontend
+      - static:/frontend/dist
 
-    command: sh -c "npm install && npm run dev"
+  gateway:
+    container_name: gateway_accounting
+    build: ./gateway
+    ports:
+      - 8000:80
+    volumes:
+      - static:/static
+
+volumes:
+  static:
