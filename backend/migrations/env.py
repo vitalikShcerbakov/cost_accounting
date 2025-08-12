@@ -3,12 +3,11 @@ from logging.config import fileConfig
 
 from alembic import context
 from dotenv import load_dotenv
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
-from backend.database import Base
-from backend.models import CategoryExpense, CategoryIncome, ExpenseType, Expense, Income
-
+from database import Base
+from models import (CategoryExpense, CategoryIncome, Expense, ExpenseType,
+                    Income)
 
 load_dotenv()
 # this is the Alembic Config object, which provides

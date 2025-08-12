@@ -3,9 +3,13 @@
 Скрипт для инициализации базы данных с начальными данными
 """
 
-from backend.database import SessionLocal, engine
-from backend import models, crud, schemas
 from datetime import datetime
+
+import crud
+import models
+import schemas
+from database import SessionLocal, engine
+
 
 def init_db():
     db = SessionLocal()

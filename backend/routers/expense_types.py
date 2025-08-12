@@ -1,8 +1,11 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
-from backend.database import get_db
-from backend import crud, schemas
+
+import crud
+import schemas
+from database import get_db
 
 router = APIRouter(prefix="/expense-types", tags=["expense-types"])
 

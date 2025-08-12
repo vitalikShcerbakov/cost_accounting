@@ -1,9 +1,12 @@
+from datetime import date
+from typing import List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import List, Optional
-from datetime import date
-from backend.database import get_db
-from backend import crud, schemas
+
+import crud
+import schemas
+from database import get_db
 
 router = APIRouter(prefix="/incomes", tags=["incomes"])
 

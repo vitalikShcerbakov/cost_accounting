@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from backend.routers import categories_expense, categories_income, expense_types, expenses, incomes, summary
+from routers import (categories_expense, categories_income, expense_types,
+                     expenses, incomes, summary)
 
 # Создание таблиц в базе данных
 # models.Base.metadata.create_all(bind=engine)
@@ -24,7 +25,8 @@ app = FastAPI(
 # Настройка CORS для фронтенда
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:9000"],  # Vue dev server
+    # allow_origins=["http://localhost:3000", "http://localhost:9001"],  # Vue dev server
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
