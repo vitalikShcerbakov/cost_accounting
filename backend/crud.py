@@ -1,8 +1,12 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import func, extract
+from datetime import date, datetime
 from typing import List, Optional
-from datetime import datetime, date
-from app import models, schemas
+
+from sqlalchemy import extract, func
+from sqlalchemy.orm import Session
+
+import models
+import schemas
+
 
 # Category expense CRUD operations
 def get_category_expense(db: Session, category_id: int):

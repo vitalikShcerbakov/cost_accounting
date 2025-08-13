@@ -16,7 +16,9 @@ import type {
   CategorySummary
 } from '../types/api'
 
-const API_BASE_URL = 'http://localhost:8000/api'
+const API_BASE_URL = process.env.DEV 
+    ? 'http://localhost:8000' // для разработки
+    : '/api'                 // для production (относительный путь)
 
 const api = axios.create({
   baseURL: API_BASE_URL,

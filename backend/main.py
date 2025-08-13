@@ -1,13 +1,11 @@
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.database import engine
-from app import models
-from app.routers import categories_expense, categories_income, expense_types, expenses, incomes, summary
+from routers import (categories_expense, categories_income, expense_types,
+                     expenses, incomes, summary)
 
 # Создание таблиц в базе данных
 # models.Base.metadata.create_all(bind=engine)
@@ -19,15 +17,16 @@ app = FastAPI(
 )
 
 # Определяем путь к статике фронтенда
-frontend_dist = Path(__file__).parent / "static" / "dist" / "spa"
+# frontend_dist = Path(__file__).parent / "static" / "dist" / "spa"
 
-app.mount('/static', StaticFiles(directory=str(frontend_dist), html=True), name='static')
+# app.mount('/static', StaticFiles(directory=str(frontend_dist), html=True), name='static')
 
 
 # Настройка CORS для фронтенда
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:9000"],  # Vue dev server
+    # allow_origins=["http://localhost:3000", "http://localhost:9001"],  # Vue dev server
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
