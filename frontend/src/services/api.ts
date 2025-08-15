@@ -17,7 +17,7 @@ import type {
 } from '../types/api'
 
 const API_BASE_URL = process.env.DEV 
-    ? 'http://localhost:8000' // для разработки
+    ? 'http://localhost:8000/api' // для разработки
     : '/api'                 // для production (относительный путь)
 
 const api = axios.create({

@@ -97,36 +97,13 @@
 
         <q-card-section>
           <q-form @submit="addIncome" class="q-gutter-md">
-            <q-input
-              v-model.number="newIncome.amount"
-              label="Сумма"
-              type="number"
-              :rules="[val => val > 0 || 'Сумма должна быть больше 0']"
-              required
-            />
-            <q-input
-              v-model="newIncome.description"
-              label="Описание"
-              :rules="[val => val.length > 0 || 'Введите описание']"
-              required
-            />
-            <q-input
-              v-model="newIncome.date"
-              label="Дата"
-              type="date"
-              required
-            />
-            <q-select
-              v-model="newIncome.category_id"
-              :options="categoriesIncome"
-              option-label="name"
-              option-value="id"
-              label="Категория"
-              :rules="[val => val > ' ' || 'Выберите категорию']"
-              required
-              emit-value
-              map-options
-            />
+            <q-input v-model.number="newIncome.amount" label="Сумма" type="number"
+              :rules="[val => val !== '', val => val > 0 || 'Сумма должна быть больше 0']" required />
+            <q-input v-model="newIncome.description" label="Описание"
+              :rules="[val => val.length > 0 || 'Введите описание']" required />
+            <q-input v-model="newIncome.date" label="Дата" type="date" required />
+            <q-select v-model="newIncome.category_id" :options="categoriesIncome" option-label="name" option-value="id"
+              label="Категория" :rules="[val => val > ' ' || 'Выберите категорию']" required emit-value map-options />
           </q-form>
         </q-card-section>
 
@@ -146,47 +123,18 @@
 
         <q-card-section>
           <q-form @submit="addExpense" class="q-gutter-md">
-            <q-input
-              v-model.number="newExpense.amount"
-              label="Сумма"
-              type="number"
-              :rules="[val => val > 0 || 'Сумма должна быть больше 0']"
-              required
-            />
-            <q-input
-              v-model="newExpense.description"
-              label="Описание"
-              :rules="[val => val.length > 0 || 'Введите описание']"
-              required
-            />
-            <q-input
-              v-model="newExpense.date"
-              label="Дата"
-              type="date"
-              required
-            />
-            <q-select
-              v-model="newExpense.category_id"
-              :options="categoriesExpense"
-              option-label="name"
-              option-value="id"
-              label="Категория"
-              :rules="[val => val > '' || 'Выберите категорию']"
-              emit-value
-              map-options
-              required
-            />
-            <q-select
-              v-model="newExpense.expense_type_id"
-              :options="expenseTypes"
-              option-label="name"
-              option-value="id"
-              label="Тип расхода"
-              :rules="[val => val > '' || 'Выберите тип расхода']"
-              emit-value
-              map-options
-              required
-            />
+            <q-input v-model="newExpense.amount"
+              @keyup.enter="calculateAmount((result: number) => newExpense.amount = result, newExpense.amount)"
+              label="Сумма" type="text" :rules="[val => val > 0 || 'Сумма должна быть больше 0']" required />
+            <q-input v-model="newExpense.description" label="Описание"
+              :rules="[val => val.length > 0 || 'Введите описание']" required />
+            <q-input v-model="newExpense.date" label="Дата" type="date" required />
+            <q-select v-model="newExpense.category_id" :options="categoriesExpense" option-label="name"
+              option-value="id" label="Категория" :rules="[val => val > '' || 'Выберите категорию']" emit-value
+              map-options required />
+            <q-select v-model="newExpense.expense_type_id" :options="expenseTypes" option-label="name" option-value="id"
+              label="Тип расхода" :rules="[val => val > '' || 'Выберите тип расхода']" emit-value map-options
+              required />
           </q-form>
         </q-card-section>
 
@@ -255,6 +203,20 @@ const monthlyExpenses = computed(() => {
 })
 
 // Методы
+const calculateAmount = (callback: CallableFunction, value: string | null | number) => {
+  try {
+    const operator = (value as string).match(/[+\-*/]/g)
+    const nums = (value as string).match(/\d+\.?\d*/g)
+    if (operator && nums) {
+      const result: number = eval(value as string)
+      callback(result)
+    }
+  } catch {
+    console.error('все пропало..')
+    return
+  }
+}
+
 const loadData = async () => {
   try {
     const [categoriesExpenseRes, categoriesIncomeRes, expenseTypesRes, incomesRes, expensesRes] = await Promise.all([
@@ -264,7 +226,7 @@ const loadData = async () => {
       incomesApi.getAll({ limit: 5 }),
       expensesApi.getAll({ limit: 5 })
     ])
-    
+
     categoriesExpense.value = categoriesExpenseRes.data
     categoriesIncome.value = categoriesIncomeRes.data
     expenseTypes.value = expenseTypesRes.data
@@ -318,7 +280,7 @@ const addExpense = async () => {
       category_id: newExpense.value.category_id,
       expense_type_id: newExpense.value.expense_type_id,
     }
-        await expensesApi.create(obj)
+    await expensesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Расход успешно добавлен'
@@ -331,9 +293,10 @@ const addExpense = async () => {
   }
 }
 
+
 // Загрузка данных при монтировании
 onMounted(() => {
   void loadData()
   newExpense.value.expense_type_id = 1
 })
-</script> 
+</script>
