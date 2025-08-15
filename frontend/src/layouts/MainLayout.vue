@@ -14,8 +14,16 @@
         <q-toolbar-title>
           Учет доходов и расходов
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <div @click="$q.dark.toggle()">
+          <q-btn
+            :class="{ 'text-black bg-grey-4': $q.dark.isActive, 'text-white bg-primary': !$q.dark.isActive }"
+            :fab-mini="true"
+            :dense="true"
+            >
+            смена темы
+          </q-btn>
+        </div>
+        <div >Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -46,6 +54,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
 
 const essentialLinks = [
   {
