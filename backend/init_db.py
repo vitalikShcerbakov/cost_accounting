@@ -3,7 +3,7 @@
 Скрипт для инициализации базы данных с начальными данными
 """
 
-from backend.app import models
+from app import models
 from database import SessionLocal, engine
 
 
@@ -32,11 +32,11 @@ def init_db():
                 category = models.CategoryExpense(**cat_data)
                 db.add(category)
 
-                categories_incomes_data = [
-                        {"name": "Зарплата", "description": "Основной доход", "color": "#4CAF50"},
-                        {"name": "Подработка", "description": "Дополнительный доход", "color": "#4CAF50"},
-                        {"name": "Проценты", "description": "Проценты по вкладам", "color": "#4CAF50"},
-                    ]
+        categories_incomes_data = [
+                {"name": "Зарплата", "description": "Основной доход", "color": "#4CAF50"},
+                {"name": "Подработка", "description": "Дополнительный доход", "color": "#4CAF50"},
+                {"name": "Проценты", "description": "Проценты по вкладам", "color": "#4CAF50"},
+            ]
         for cat_data in categories_incomes_data:
             existing = db.query(models.CategoryIncome).filter(models.CategoryIncome.name == cat_data["name"]).first()
             if not existing:

@@ -1,8 +1,10 @@
+import sqlalchemy
 from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey, Integer,
                         String, Text)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
+from auth.models import Users
 from database import Base
 
 
@@ -15,10 +17,11 @@ class CategoryExpense(Base):
     color = Column(String, nullable=True)  # Для UI цветового кодирования
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     # Отношения
     expenses = relationship("Expense", back_populates="categories_expense")
-
+    user = relationship("Users", back_populates='categories_expense')
 
 class CategoryIncome(Base):
     __tablename__ = "categories_incomes"
@@ -29,9 +32,11 @@ class CategoryIncome(Base):
     color = Column(String, nullable=True)  # Для UI цветового кодирования
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     # Отношения
     incomes = relationship("Income", back_populates="categories_income")
+    user = relationship("Users", back_populates='categories_income')
 
 
 class ExpenseType(Base):
@@ -44,9 +49,11 @@ class ExpenseType(Base):
     monthly_budget = Column(Float, nullable=True)  # Бюджет на месяц для ежемесячных трат
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     # Отношения
     expenses = relationship("Expense", back_populates="expense_type")
+    user = relationship("Users", back_populates='expense_type')
 
 
 class Expense(Base):
@@ -60,11 +67,13 @@ class Expense(Base):
     expense_type_id = Column(Integer, ForeignKey("expense_types.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    # user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     # Отношения
     categories_expense = relationship("CategoryExpense", back_populates="expenses")
     expense_type = relationship("ExpenseType", back_populates="expenses")
+
+    user = relationship("Users", back_populates='expenses')
 
 
 class Income(Base):
@@ -77,6 +86,10 @@ class Income(Base):
     category_id = Column(Integer, ForeignKey("categories_incomes.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     # Отношения
     categories_income = relationship("CategoryIncome", back_populates="incomes")
+    user = relationship("Users", back_populates='incomes')
+
+

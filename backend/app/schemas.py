@@ -62,6 +62,7 @@ class ExpenseBase(BaseModel):
     date: datetime
     category_id: int
     expense_type_id: int
+    user_id: int
 
 
 class ExpenseCreate(ExpenseBase):
