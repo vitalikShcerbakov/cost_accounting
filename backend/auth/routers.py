@@ -6,8 +6,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from backend.auth.auth import create_access_token, get_current_active_user
-from backend.auth.schemas import Token, User
 from backend.auth.crud import authenticate_user
+from backend.auth.schemas import Token, User
 
 router = APIRouter(tags=['auth'], prefix="/api")
 

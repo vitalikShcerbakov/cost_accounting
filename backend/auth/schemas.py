@@ -17,6 +17,5 @@ class User(BaseModel):
     is_active: bool | None = None
 
 
-
 class UserInDB(User):
     hashed_password: str

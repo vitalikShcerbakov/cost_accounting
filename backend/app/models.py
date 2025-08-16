@@ -8,33 +8,35 @@ from backend.database import Base
 
 class CategoryExpense(Base):
     __tablename__ = "categories_expenses"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
     color = Column(String, nullable=True)  # Для UI цветового кодирования
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+
     # Отношения
     expenses = relationship("Expense", back_populates="categories_expense")
 
+
 class CategoryIncome(Base):
     __tablename__ = "categories_incomes"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
     color = Column(String, nullable=True)  # Для UI цветового кодирования
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+
     # Отношения
     incomes = relationship("Income", back_populates="categories_income")
 
+
 class ExpenseType(Base):
     __tablename__ = "expense_types"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
@@ -42,13 +44,14 @@ class ExpenseType(Base):
     monthly_budget = Column(Float, nullable=True)  # Бюджет на месяц для ежемесячных трат
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+
     # Отношения
     expenses = relationship("Expense", back_populates="expense_type")
 
+
 class Expense(Base):
     __tablename__ = "expenses"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float, nullable=False)
     description = Column(Text, nullable=True)
@@ -57,14 +60,15 @@ class Expense(Base):
     expense_type_id = Column(Integer, ForeignKey("expense_types.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+
     # Отношения
     categories_expense = relationship("CategoryExpense", back_populates="expenses")
     expense_type = relationship("ExpenseType", back_populates="expenses")
 
+
 class Income(Base):
     __tablename__ = "incomes"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float, nullable=False)
     description = Column(Text, nullable=True)
@@ -72,6 +76,6 @@ class Income(Base):
     category_id = Column(Integer, ForeignKey("categories_incomes.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+
     # Отношения
-    categories_income = relationship("CategoryIncome", back_populates="incomes") 
+    categories_income = relationship("CategoryIncome", back_populates="incomes")

@@ -1,4 +1,3 @@
-import hashlib
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
@@ -9,13 +8,11 @@ from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-# from app.config import setting
 from backend.auth.crud import get_user
 from backend.auth.schemas import TokenData, User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
 
 
 def verify_password(plain_password, hashed_password):

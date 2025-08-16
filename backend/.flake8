@@ -1,0 +1,14 @@
+[flake8]
+builtins=plpy
+extend-ignore = E501
+        # E501 Длина строки
+        # E402 импорт на уровне модуля не в начале файла
+        # C901 Функция слишком сложна (C901)
+        # E711 Сравнение с None должно быть 'is None' (sqlalchemy is None не понимает)
+exclude =
+    .git,
+    __pycache__,
+    venv,
+    migrations,
+    __init__.py
+max-complexity = 10
