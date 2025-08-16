@@ -3,11 +3,7 @@
 Скрипт для инициализации базы данных с начальными данными
 """
 
-from datetime import datetime
-
-import crud
-import models
-import schemas
+from backend.app import models
 from database import SessionLocal, engine
 
 

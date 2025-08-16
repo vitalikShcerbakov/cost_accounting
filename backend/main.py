@@ -1,11 +1,10 @@
-from pathlib import Path
-
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
-from routers import (categories_expense, categories_income, expense_types,
-                     expenses, incomes, summary)
+from app.routers import (categories_expense, categories_income, expense_types,
+                                 expenses, summary)
+from app.routers import incomes
 
 # Создание таблиц в базе данных
 # models.Base.metadata.create_all(bind=engine)
@@ -42,4 +41,8 @@ app.include_router(summary.router, prefix='/api')
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy"} 
+    return {"status": "healthy"}
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)

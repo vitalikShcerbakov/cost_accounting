@@ -1,11 +1,11 @@
-from datetime import date, datetime
-from typing import List, Optional
+from datetime import date
+from typing import Optional
 
 from sqlalchemy import extract, func
 from sqlalchemy.orm import Session
 
-import models
-import schemas
+from backend.app import models
+from backend.app import schemas
 
 
 # Category expense CRUD operations

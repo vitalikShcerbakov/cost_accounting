@@ -5,8 +5,8 @@ from alembic import context
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
-from database import Base
-from models import (CategoryExpense, CategoryIncome, Expense, ExpenseType,
+from backend.database import Base
+from backend.app.models import (CategoryExpense, CategoryIncome, Expense, ExpenseType,
                     Income)
 
 load_dotenv()
