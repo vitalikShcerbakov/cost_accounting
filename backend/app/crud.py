@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from backend.app import models, schemas
+from app import models, schemas
 
 
 # Category expense CRUD operations

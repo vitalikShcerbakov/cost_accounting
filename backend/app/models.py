@@ -3,7 +3,7 @@ from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey, Integer,
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from backend.database import Base
+from database import Base
 
 
 class CategoryExpense(Base):
@@ -60,6 +60,7 @@ class Expense(Base):
     expense_type_id = Column(Integer, ForeignKey("expense_types.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    # user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     # Отношения
     categories_expense = relationship("CategoryExpense", back_populates="expenses")

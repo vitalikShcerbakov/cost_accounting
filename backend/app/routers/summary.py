@@ -4,8 +4,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from backend.app import crud, schemas
-from backend.database import get_db
+from app import crud, schemas
+from database import get_db
 
 router = APIRouter(prefix="/summary", tags=["summary"])
 

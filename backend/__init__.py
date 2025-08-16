@@ -1,1 +1,3 @@
-# Cost Accounting Application 
+# from .app import models
+#
+# __all__ = ['models']
