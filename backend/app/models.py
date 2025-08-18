@@ -1,16 +1,13 @@
-import sqlalchemy
 from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey, Integer,
                         String, Text)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from auth.models import Users
 from database import Base
 
 
 class CategoryExpense(Base):
     __tablename__ = "categories_expenses"
-
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
@@ -23,9 +20,9 @@ class CategoryExpense(Base):
     expenses = relationship("Expense", back_populates="categories_expense")
     user = relationship("Users", back_populates='categories_expense')
 
+
 class CategoryIncome(Base):
     __tablename__ = "categories_incomes"
-
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
@@ -41,7 +38,6 @@ class CategoryIncome(Base):
 
 class ExpenseType(Base):
     __tablename__ = "expense_types"
-
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
@@ -72,13 +68,11 @@ class Expense(Base):
     # Отношения
     categories_expense = relationship("CategoryExpense", back_populates="expenses")
     expense_type = relationship("ExpenseType", back_populates="expenses")
-
     user = relationship("Users", back_populates='expenses')
 
 
 class Income(Base):
     __tablename__ = "incomes"
-
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float, nullable=False)
     description = Column(Text, nullable=True)
@@ -91,5 +85,3 @@ class Income(Base):
     # Отношения
     categories_income = relationship("CategoryIncome", back_populates="incomes")
     user = relationship("Users", back_populates='incomes')
-
-

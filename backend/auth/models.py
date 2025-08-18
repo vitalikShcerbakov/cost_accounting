@@ -1,7 +1,7 @@
 import sqlalchemy.sql.expression
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
-from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from database import Base
 

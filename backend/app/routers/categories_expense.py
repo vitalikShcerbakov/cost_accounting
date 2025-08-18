@@ -3,8 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import crud
-from app import schemas
+from app import crud, schemas
 from database import get_db
 
 router = APIRouter(prefix="/categories_expense", tags=["categories_expense"])
