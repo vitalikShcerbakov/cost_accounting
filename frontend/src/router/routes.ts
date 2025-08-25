@@ -35,6 +35,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/ReportsPage.vue'),
         meta: { verboseName: 'Отчёты' },
       },
+          {
+        path: 'login/',
+        name: 'login',
+        component: () => import('pages/LoginComp.vue'),
+        meta: { verboseName: 'Логин' }
+    },
     ],
   },
   {

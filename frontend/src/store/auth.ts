@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, acceptHMRUpdate } from "pinia";
 import api from 'src/services/api'
 
 export const useAuthStore = defineStore('auth', {
@@ -8,10 +8,16 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async login(username:string, password:string){
-            const res = await api.post(`/auth/token`, new URLSearchParams({username, password}))
+            try {
+            console.log('username:', username, 'username:', password)
+            const params = new URLSearchParams({ username, password })
+            const res = await api.post(`/auth/token`, params, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }})
             this.token = res.data.access_token
             localStorage.setItem('token', this.token ? this.token : '')
             api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+            } catch(err) {
+                console.log('error: ', err)
+            }
         },
         async fetchUser() {
             const res = await api.get(`/auth/me`, {
@@ -29,4 +35,7 @@ export const useAuthStore = defineStore('auth', {
             delete api.defaults.headers.common['Authorization']
         }, 
     }
-})
+});
+if (import.meta.hot) { //  функция из модуля Pinia, которая включает замену горячих модулей (HMR) для хранилищ
+  import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot));
+}

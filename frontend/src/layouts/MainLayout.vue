@@ -24,6 +24,9 @@
           </q-btn>
         </div>
         <div >Quasar v{{ $q.version }}</div>
+                <div class="header_login">
+            <header-login></header-login>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -55,6 +58,7 @@
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
+import HeaderLogin from 'src/pages/HeaderLogin.vue';
 
 const $q = useQuasar()
 
@@ -88,7 +92,14 @@ const essentialLinks = [
     caption: 'Аналитика и отчеты',
     icon: 'analytics',
     link: '/reports'
+  },
+    {
+    title: 'Login',
+    caption: 'Войти в систему',
+    icon: 'alarm',
+    link: '/login'
   }
+
 ]
 
 const leftDrawerOpen = ref(false)
