@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from database import Base
-
+from auth.models import Users
 
 class CategoryExpense(Base):
     __tablename__ = "categories_expenses"

@@ -55,13 +55,26 @@ def init_db():
             if not existing:
                 expense_type = models.ExpenseType(**et_data)
                 db.add(expense_type)
+        # Создание ползьватей
+        user_data = {
+            "name": "admin",
+            "email": "admin@gmail.com",
+            "is_active": True,
+            "hashed_password": "$2b$12$sWo1FFh4H1Fpse0PvOPy6O./CbMB6P2Wnz39eMWAo7y43yfZ4jwz6"
+        }
+        existing = db.query(models.Users).filter(models.Users.name == user_data['name']).first()
+        if not existing:
+            user = models.Users(**user_data)
+            db.add(user)
         db.commit()
         print("База данных успешно инициализирована!")
         # Вывод созданных данных
         categories = db.query(models.CategoryExpense).all()
         expense_types = db.query(models.ExpenseType).all()
+        users = db.query(models.Users).all()
         print(f"\nСоздано категорий: {len(categories)}")
         print(f"Создано видов трат: {len(expense_types)}")
+        print(f"Создан пользователей: {len(users)}")
     except Exception as e:
         print(f"Ошибка при инициализации базы данных: {e}")
         db.rollback()
