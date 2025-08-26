@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -9,20 +9,26 @@ class CategoryBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     description: Optional[str] = None
     color: Optional[str] = None
+    user_id: int
+
 
 class CategoryCreate(CategoryBase):
     pass
 
+
 class CategoryUpdate(CategoryBase):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
+    user_id: Optional[int] = None
+
 
 class Category(CategoryBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
-    
+
     class Config:
         from_attributes = True
+
 
 # ExpenseType schemas
 class ExpenseTypeBase(BaseModel):
@@ -30,22 +36,28 @@ class ExpenseTypeBase(BaseModel):
     description: Optional[str] = None
     is_monthly: bool = False
     monthly_budget: Optional[float] = None
+    user_id: int
+
 
 class ExpenseTypeCreate(ExpenseTypeBase):
     pass
+
 
 class ExpenseTypeUpdate(ExpenseTypeBase):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
     is_monthly: Optional[bool] = None
     monthly_budget: Optional[float] = None
+    user_id: Optional[int] = None
+
 
 class ExpenseType(ExpenseTypeBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
-    
+
     class Config:
         from_attributes = True
+
 
 # Expense schemas
 class ExpenseBase(BaseModel):
@@ -54,9 +66,12 @@ class ExpenseBase(BaseModel):
     date: datetime
     category_id: int
     expense_type_id: int
+    user_id: int
+
 
 class ExpenseCreate(ExpenseBase):
     pass
+
 
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = Field(None, gt=0)
@@ -64,6 +79,8 @@ class ExpenseUpdate(BaseModel):
     date: Optional[datetime] = None
     category_id: Optional[int] = None
     expense_type_id: Optional[int] = None
+    user_id: Optional[int] = None
+
 
 class Expense(ExpenseBase):
     id: int
@@ -71,9 +88,10 @@ class Expense(ExpenseBase):
     updated_at: Optional[datetime] = None
     categories_expense: Category
     expense_type: ExpenseType
-    
+
     class Config:
         from_attributes = True
+
 
 # Income schemas
 class IncomeBase(BaseModel):
@@ -81,24 +99,30 @@ class IncomeBase(BaseModel):
     description: Optional[str] = None
     date: datetime
     category_id: int
+    user_id: int
+
 
 class IncomeCreate(IncomeBase):
     pass
+
 
 class IncomeUpdate(BaseModel):
     amount: Optional[float] = Field(None, gt=0)
     description: Optional[str] = None
     date: Optional[datetime] = None
     category_id: Optional[int] = None
+    user_id: Optional[int] = None
+
 
 class Income(IncomeBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
     categories_income: Category
-    
+
     class Config:
         from_attributes = True
+
 
 # Summary schemas
 class MonthlySummary(BaseModel):
@@ -108,6 +132,7 @@ class MonthlySummary(BaseModel):
     balance: float
     monthly_expenses: float
     other_expenses: float
+
 
 class CategorySummary(BaseModel):
     category_id: int

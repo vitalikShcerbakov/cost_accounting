@@ -16,7 +16,7 @@ import type {
   CategorySummary
 } from '../types/api'
 
-const API_BASE_URL = process.env.DEV 
+const API_BASE_URL = import.meta.env.DEV 
     ? 'http://localhost:8000/api' // для разработки
     : '/api'                 // для production (относительный путь)
 
@@ -26,6 +26,34 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 })
+
+// Добавляем перехватчик для добавления токена к запросам
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(new Error(error.message || 'Request error'))
+  }
+)
+
+// Добавляем перехватчик для обработки ошибок авторизации
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Токен истек или недействителен
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      window.location.href = '/login'
+    }
+    return Promise.reject(new Error(error.message || 'Network error'))
+  }
+)
 
 // Categories API
 export const categoriesExpenseApi = {

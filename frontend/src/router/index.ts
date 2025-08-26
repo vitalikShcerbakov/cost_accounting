@@ -32,5 +32,19 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
+  // Навигационный guard для проверки аутентификации
+  Router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token')
+    const requiresAuth = to.meta.requiresAuth !== false
+
+    if (requiresAuth && !token) {
+      next('/login')
+    } else if (to.path === '/login' && token) {
+      next('/')
+    } else {
+      next()
+    }
+  })
+
   return Router
 }) 

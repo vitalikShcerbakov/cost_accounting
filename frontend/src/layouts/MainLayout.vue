@@ -24,6 +24,24 @@
           </q-btn>
         </div>
         <div >Quasar v{{ $q.version }}</div>
+        
+        <!-- Информация о пользователе и кнопка выхода -->
+        <div v-if="authStore.user" class="row items-center q-gutter-sm">
+          <q-chip color="primary" text-color="white" icon="person">
+          </q-chip>
+          <q-btn
+            flat
+            round
+            icon="logout"
+            color="negative"
+            @click="logout"
+            title="Выйти"
+          />
+        </div>
+        
+        <div class="header_login">
+            <header-login></header-login>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -55,8 +73,13 @@
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
+import HeaderLogin from 'src/pages/HeaderLogin.vue'
+import { useAuthStore } from 'src/store/auth'
+import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const essentialLinks = [
   {
@@ -95,5 +118,10 @@ const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+async function logout() {
+  authStore.logout()
+  await router.push('/login')
 }
 </script> 

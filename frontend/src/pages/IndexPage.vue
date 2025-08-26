@@ -152,8 +152,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { categoriesExpenseApi, expenseTypesApi, incomesApi, expensesApi, categoriesIncomeApi } from '../services/api'
 import type { Category, ExpenseType, Income, IncomeCreate, Expense, ExpenseCreate } from '../types/api'
+import { useAuthStore } from '../store/auth'
 
 const $q = useQuasar()
+const authStore = useAuthStore()
 
 // Реактивные данные
 const categoriesExpense = ref<Category[]>([])
@@ -241,20 +243,38 @@ const loadData = async () => {
 }
 const addIncome = async () => {
   try {
+    console.log('=== ДЕБАГ ИНФОРМАЦИЯ ===')
+    console.log('authStore.token:', authStore.token)
+    console.log('authStore.user:', authStore.user)
+    console.log('localStorage token:', localStorage.getItem('token'))
+    console.log('localStorage user:', localStorage.getItem('user'))
+    
     await loadData()
     showIncomeDialog.value = false
-    const obj = {
+    const obj: IncomeCreate = {
       amount: newIncome.value.amount,
       description: newIncome.value.description,
       date: newIncome.value.date + ' ' + new Date().toISOString().split('T')[1],
       category_id: newIncome.value.category_id
     }
+    console.log('перед тем как добавить доход ')
+    console.log('authStore ---', authStore.user)
+    // Добавляем user_id только если пользователь авторизован
+    if (authStore.user && Number.isInteger(authStore.user.id)) {
+      obj.user_id = authStore.user.id
+      console.log('Добавляем доход с user_id:', obj.user_id)
+    } else {
+      console.log('Пользователь не авторизован, user_id:', authStore.user)
+    }
+    
+    console.log('Отправляем данные дохода:', obj)
     await incomesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Доход успешно добавлен'
     })
-  } catch {
+  } catch (error) {
+    console.error('Ошибка добавления дохода:', error)
     $q.notify({
       type: 'negative',
       message: 'Ошибка добавления дохода'
@@ -273,19 +293,30 @@ const addExpense = async () => {
       const timeNow = timeStr.substring(0, timeStr.length - 1)
       console.log('fddfdf', timeNow)
     }
-    const obj = {
+    const obj: ExpenseCreate = {
       amount: newExpense.value.amount,
       description: newExpense.value.description,
       date: newExpense.value.date + ' ' + timeStr,
       category_id: newExpense.value.category_id,
       expense_type_id: newExpense.value.expense_type_id,
     }
+    
+    // Добавляем user_id только если пользователь авторизован
+    if (authStore.user && Number.isInteger(authStore.user.id)) {
+      obj.user_id = authStore.user.id
+      console.log('Добавляем расход с user_id:', obj.user_id)
+    } else {
+      console.log('Пользователь не авторизован, user_id:', authStore.user)
+    }
+    
+    console.log('Отправляем данные расхода:', obj)
     await expensesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Расход успешно добавлен'
     })
-  } catch {
+  } catch (error) {
+    console.error('Ошибка добавления расхода:', error)
     $q.notify({
       type: 'negative',
       message: 'Ошибка добавления расхода'
@@ -296,6 +327,11 @@ const addExpense = async () => {
 
 // Загрузка данных при монтировании
 onMounted(() => {
+  console.log('=== IndexPage onMounted ===')
+  console.log('authStore.token:', authStore.token)
+  console.log('authStore.user:', authStore.user)
+  console.log('localStorage token:', localStorage.getItem('token'))
+  console.log('localStorage user:', localStorage.getItem('user'))
   void loadData()
   newExpense.value.expense_type_id = 1
 })

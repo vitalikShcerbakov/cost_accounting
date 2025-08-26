@@ -62,6 +62,7 @@ export interface CategoryCreate {
   name: string
   description?: string
   color?: string
+  user_id?: number
 }
 
 export interface CategoryUpdate {
@@ -75,6 +76,7 @@ export interface ExpenseTypeCreate {
   description?: string
   is_monthly: boolean
   monthly_budget?: number
+  user_id?: number
 }
 
 export interface ExpenseTypeUpdate {
@@ -90,6 +92,7 @@ export interface ExpenseCreate {
   date: string
   category_id: number
   expense_type_id: number
+  user_id?: number
 }
 
 export interface ExpenseUpdate {
@@ -105,6 +108,7 @@ export interface IncomeCreate {
   description: string
   date: string
   category_id: number
+  user_id?: number
 }
 
 export interface IncomeUpdate {

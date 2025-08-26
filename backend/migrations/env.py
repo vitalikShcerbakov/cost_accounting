@@ -5,9 +5,10 @@ from alembic import context
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
+from app.models import (CategoryExpense, CategoryIncome, Expense, ExpenseType,
+                        Income)
+from auth.models import Users
 from database import Base
-from models import (CategoryExpense, CategoryIncome, Expense, ExpenseType,
-                    Income)
 
 load_dotenv()
 # this is the Alembic Config object, which provides
