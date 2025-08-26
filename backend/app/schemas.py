@@ -9,6 +9,7 @@ class CategoryBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     description: Optional[str] = None
     color: Optional[str] = None
+    user_id: int
 
 
 class CategoryCreate(CategoryBase):
@@ -17,6 +18,7 @@ class CategoryCreate(CategoryBase):
 
 class CategoryUpdate(CategoryBase):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
+    user_id: Optional[int] = None
 
 
 class Category(CategoryBase):
@@ -34,6 +36,7 @@ class ExpenseTypeBase(BaseModel):
     description: Optional[str] = None
     is_monthly: bool = False
     monthly_budget: Optional[float] = None
+    user_id: int
 
 
 class ExpenseTypeCreate(ExpenseTypeBase):
@@ -44,6 +47,7 @@ class ExpenseTypeUpdate(ExpenseTypeBase):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
     is_monthly: Optional[bool] = None
     monthly_budget: Optional[float] = None
+    user_id: Optional[int] = None
 
 
 class ExpenseType(ExpenseTypeBase):
@@ -75,6 +79,7 @@ class ExpenseUpdate(BaseModel):
     date: Optional[datetime] = None
     category_id: Optional[int] = None
     expense_type_id: Optional[int] = None
+    user_id: Optional[int] = None
 
 
 class Expense(ExpenseBase):
@@ -94,6 +99,7 @@ class IncomeBase(BaseModel):
     description: Optional[str] = None
     date: datetime
     category_id: int
+    user_id: int
 
 
 class IncomeCreate(IncomeBase):
@@ -105,6 +111,7 @@ class IncomeUpdate(BaseModel):
     description: Optional[str] = None
     date: Optional[datetime] = None
     category_id: Optional[int] = None
+    user_id: Optional[int] = None
 
 
 class Income(IncomeBase):

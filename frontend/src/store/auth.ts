@@ -9,10 +9,16 @@ interface User {
 }
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        token: localStorage.getItem('token'),
-        user: null as User | null,
-    }),
+    state: () => {
+        const token = localStorage.getItem('token')
+        const userStr = localStorage.getItem('user')
+        const user = userStr ? JSON.parse(userStr) as User : null
+        
+        return {
+            token,
+            user,
+        }
+    },
     actions: {
         async login(username:string, password:string){
             try {
@@ -34,11 +40,30 @@ export const useAuthStore = defineStore('auth', {
             })
             api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
             this.user = res.data.user
+            // Сохраняем пользователя в localStorage
+            localStorage.setItem('user', JSON.stringify(this.user))
         },
+            async initAuth() {
+      // Восстанавливаем состояние аутентификации при загрузке приложения
+      console.log('Инициализация аутентификации, token:', this.token)
+      if (this.token) {
+        try {
+          api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+          await this.fetchUser()
+          console.log('Пользователь восстановлен:', this.user)
+        } catch (error) {
+          console.log('Ошибка восстановления аутентификации:', error)
+          this.logout()
+        }
+      } else {
+        console.log('Токен не найден')
+      }
+    },
         logout() {
             this.token = null
             this.user = null
             localStorage.removeItem('token')
+            localStorage.removeItem('user')
             delete api.defaults.headers.common['Authorization']
         }, 
     }

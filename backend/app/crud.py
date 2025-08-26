@@ -12,8 +12,11 @@ def get_category_expense(db: Session, category_id: int):
     return db.query(models.CategoryExpense).filter(models.CategoryExpense.id == category_id).first()
 
 
-def get_categories_expense(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.CategoryExpense).offset(skip).limit(limit).all()
+def get_categories_expense(db: Session, skip: int = 0, limit: int = 100, user_id: Optional[int] = None):
+    query = db.query(models.CategoryExpense)
+    if user_id:
+        query = query.filter(models.CategoryExpense.user_id == user_id)
+    return query.offset(skip).limit(limit).all()
 
 
 def create_category_expense(db: Session, category: schemas.CategoryCreate):
@@ -48,8 +51,11 @@ def get_category_income(db: Session, category_id: int):
     return db.query(models.CategoryIncome).filter(models.CategoryIncome.id == category_id).first()
 
 
-def get_categories_income(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.CategoryIncome).offset(skip).limit(limit).all()
+def get_categories_income(db: Session, skip: int = 0, limit: int = 100, user_id: Optional[int] = None):
+    query = db.query(models.CategoryIncome)
+    if user_id:
+        query = query.filter(models.CategoryIncome.user_id == user_id)
+    return query.offset(skip).limit(limit).all()
 
 
 def create_category_income(db: Session, category: schemas.CategoryCreate):
@@ -126,7 +132,8 @@ def get_expense(db: Session, expense_id: int):
 
 def get_expenses(db: Session, skip: int = 0, limit: int = 100,
                  start_date: Optional[date] = None, end_date: Optional[date] = None,
-                 category_id: Optional[int] = None, expense_type_id: Optional[int] = None):
+                 category_id: Optional[int] = None, expense_type_id: Optional[int] = None,
+                 user_id: Optional[int] = None):
     query = db.query(models.Expense)
     if start_date:
         query = query.filter(models.Expense.date >= start_date)
@@ -136,6 +143,8 @@ def get_expenses(db: Session, skip: int = 0, limit: int = 100,
         query = query.filter(models.Expense.category_id == category_id)
     if expense_type_id:
         query = query.filter(models.Expense.expense_type_id == expense_type_id)
+    if user_id:
+        query = query.filter(models.Expense.user_id == user_id)
     return query.offset(skip).limit(limit).all()
 
 
@@ -173,7 +182,7 @@ def get_income(db: Session, income_id: int):
 
 def get_incomes(db: Session, skip: int = 0, limit: int = 100,
                 start_date: Optional[date] = None, end_date: Optional[date] = None,
-                category_id: Optional[int] = None):
+                category_id: Optional[int] = None, user_id: Optional[int] = None):
     query = db.query(models.Income)
     if start_date:
         query = query.filter(models.Income.date >= start_date)
@@ -181,6 +190,8 @@ def get_incomes(db: Session, skip: int = 0, limit: int = 100,
         query = query.filter(models.Income.date <= end_date)
     if category_id:
         query = query.filter(models.Income.category_id == category_id)
+    if user_id:
+        query = query.filter(models.Income.user_id == user_id)
     return query.offset(skip).limit(limit).all()
 
 

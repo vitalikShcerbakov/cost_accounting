@@ -16,7 +16,7 @@ import type {
   CategorySummary
 } from '../types/api'
 
-const API_BASE_URL = process.env.DEV 
+const API_BASE_URL = import.meta.env.DEV 
     ? 'http://localhost:8000/api' // для разработки
     : '/api'                 // для production (относительный путь)
 

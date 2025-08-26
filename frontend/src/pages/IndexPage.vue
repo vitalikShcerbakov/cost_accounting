@@ -243,6 +243,12 @@ const loadData = async () => {
 }
 const addIncome = async () => {
   try {
+    console.log('=== ДЕБАГ ИНФОРМАЦИЯ ===')
+    console.log('authStore.token:', authStore.token)
+    console.log('authStore.user:', authStore.user)
+    console.log('localStorage token:', localStorage.getItem('token'))
+    console.log('localStorage user:', localStorage.getItem('user'))
+    
     await loadData()
     showIncomeDialog.value = false
     const obj: IncomeCreate = {
@@ -251,18 +257,24 @@ const addIncome = async () => {
       date: newIncome.value.date + ' ' + new Date().toISOString().split('T')[1],
       category_id: newIncome.value.category_id
     }
-    
+    console.log('перед тем как добавить доход ')
+    console.log('authStore ---', authStore.user)
     // Добавляем user_id только если пользователь авторизован
-    if (authStore.user?.id) {
+    if (authStore.user && Number.isInteger(authStore.user.id)) {
       obj.user_id = authStore.user.id
+      console.log('Добавляем доход с user_id:', obj.user_id)
+    } else {
+      console.log('Пользователь не авторизован, user_id:', authStore.user)
     }
     
+    console.log('Отправляем данные дохода:', obj)
     await incomesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Доход успешно добавлен'
     })
-  } catch {
+  } catch (error) {
+    console.error('Ошибка добавления дохода:', error)
     $q.notify({
       type: 'negative',
       message: 'Ошибка добавления дохода'
@@ -290,16 +302,21 @@ const addExpense = async () => {
     }
     
     // Добавляем user_id только если пользователь авторизован
-    if (authStore.user?.id) {
+    if (authStore.user && Number.isInteger(authStore.user.id)) {
       obj.user_id = authStore.user.id
+      console.log('Добавляем расход с user_id:', obj.user_id)
+    } else {
+      console.log('Пользователь не авторизован, user_id:', authStore.user)
     }
     
+    console.log('Отправляем данные расхода:', obj)
     await expensesApi.create(obj)
     $q.notify({
       type: 'positive',
       message: 'Расход успешно добавлен'
     })
-  } catch {
+  } catch (error) {
+    console.error('Ошибка добавления расхода:', error)
     $q.notify({
       type: 'negative',
       message: 'Ошибка добавления расхода'
@@ -310,6 +327,11 @@ const addExpense = async () => {
 
 // Загрузка данных при монтировании
 onMounted(() => {
+  console.log('=== IndexPage onMounted ===')
+  console.log('authStore.token:', authStore.token)
+  console.log('authStore.user:', authStore.user)
+  console.log('localStorage token:', localStorage.getItem('token'))
+  console.log('localStorage user:', localStorage.getItem('user'))
   void loadData()
   newExpense.value.expense_type_id = 1
 })

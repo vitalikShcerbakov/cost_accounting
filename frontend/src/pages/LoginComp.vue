@@ -30,9 +30,13 @@ const router = useRouter()
   const auth = useAuthStore();
 
   const login = async () => { 
-      await auth.login(username.value, password.value)
-      await auth.fetchUser()
-      await router.push('/') // перенаправить на главную
+      try {
+        await auth.login(username.value, password.value)
+        await auth.fetchUser()
+        await router.push('/') // перенаправить на главную
+      } catch (error) {
+        console.error('Ошибка входа:', error)
+      }
       }
   </script>
   

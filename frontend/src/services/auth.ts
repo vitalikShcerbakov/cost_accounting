@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { LoginRequest, RegisterRequest, Token, User } from '../types/auth'
 
-const API_BASE_URL = process.env.DEV 
+const API_BASE_URL = import.meta.env.DEV 
     ? 'http://localhost:8000' // для разработки
     : ''                 // для production
 

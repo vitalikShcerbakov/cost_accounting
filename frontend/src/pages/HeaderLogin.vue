@@ -1,7 +1,7 @@
 <template>
   <div class="header_text">
     <div v-if="auth.user">
-      <a class="header_text">{{ auth.user }} </a>
+      <!-- <a class="header_text">{{ auth.user }} </a> -->
       <button @click="logout"> Выйти </button>
     </div>
     <div v-else>
