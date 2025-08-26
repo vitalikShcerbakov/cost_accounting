@@ -1,10 +1,17 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import api from 'src/services/api'
 
+interface User {
+  id: number
+  name: string
+  email?: string
+  is_active?: boolean
+}
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: localStorage.getItem('token'),
-        user: null,
+        user: null as User | null,
     }),
     actions: {
         async login(username:string, password:string){

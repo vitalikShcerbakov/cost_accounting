@@ -136,8 +136,10 @@ import { useQuasar } from 'quasar'
 import { incomesApi, categoriesIncomeApi } from '../services/api'
 import type { Income, IncomeCreate, IncomeUpdate, Category } from '../types/api'
 import type { QTableProps } from 'quasar'
+import { useAuthStore } from '../store/auth'
 
 const $q = useQuasar()
+const authStore = useAuthStore()
 
 // Реактивные данные
 const incomes = ref<Income[]>([])
@@ -217,6 +219,12 @@ const loadCategories = async () => {
 const saveIncome = async () => {
   try {
     form.value.date = form.value.date + ' ' + new Date().toISOString().split('T')[1]  // подумать как заменить кастыль
+    
+    // Добавляем user_id из store
+    if (authStore.user?.id) {
+      form.value.user_id = authStore.user.id
+    }
+    
     if (editingIncome.value) {
       await incomesApi.update(editingIncome.value.id, form.value as IncomeUpdate)
       $q.notify({

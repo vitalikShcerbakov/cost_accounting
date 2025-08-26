@@ -27,6 +27,34 @@ const api = axios.create({
   }
 })
 
+// Добавляем перехватчик для добавления токена к запросам
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(new Error(error.message || 'Request error'))
+  }
+)
+
+// Добавляем перехватчик для обработки ошибок авторизации
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Токен истек или недействителен
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      window.location.href = '/login'
+    }
+    return Promise.reject(new Error(error.message || 'Network error'))
+  }
+)
+
 // Categories API
 export const categoriesExpenseApi = {
   getAll: () => api.get<Category[]>('/categories_expense/'),

@@ -76,8 +76,10 @@ import { ref, onMounted } from 'vue'
 import { Dialog, useQuasar } from 'quasar'
 import { categoriesExpenseApi } from '../services/api'
 import type { Category, CategoryCreate, CategoryUpdate } from '../types/api'
+import { useAuthStore } from '../store/auth'
 
 const $q = useQuasar()
+const authStore = useAuthStore()
 
 // Реактивные данные
 const categories = ref<Category[]>([])
@@ -129,6 +131,11 @@ const loadCategories = async () => {
 
 const saveCategory = async () => {
   try {
+    // Добавляем user_id из store при создании новой категории
+    if (!editingCategory.value && authStore.user?.id) {
+      form.value.user_id = authStore.user.id
+    }
+    
     if (editingCategory.value) {
       await categoriesExpenseApi.update(editingCategory.value.id, form.value as CategoryUpdate)
       $q.notify({
