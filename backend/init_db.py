@@ -14,6 +14,7 @@ def init_db():
         models.Base.metadata.create_all(bind=engine)
         # Создание ползьватей
         user_data = {
+            "id": 1,
             "name": "admin",
             "email": "admin@gmail.com",
             "is_active": True,
@@ -25,16 +26,16 @@ def init_db():
             db.add(user)
         # Создание начальных категорий
         categories_expenses_data = [
-            {"name": "Продукты", "description": "Продукты питания", "color": "#4CAF50", "user_id": 0},
-            {"name": "Транспорт", "description": "Общественный транспорт, такси", "color": "#2196F3", "user_id": 0},
-            {"name": "Автомобиль", "description": "Топливо, ремонт, страховка", "color": "#FF9800", "user_id": 0},
-            {"name": "Жилье", "description": "Квартплата, коммунальные услуги", "color": "#9C27B0", "user_id": 0},
-            {"name": "Развлечения", "description": "Кино, рестораны, хобби", "color": "#E91E63", "user_id": 0},
-            {"name": "Здоровье", "description": "Медицина, лекарства", "color": "#F44336", "user_id": 0},
-            {"name": "Одежда", "description": "Одежда и обувь", "color": "#795548", "user_id": 0},
-            {"name": "Отпуск", "description": "Путешествия и отдых", "color": "#00BCD4", "user_id": 0},
-            {"name": "Ремонт", "description": "Ремонт квартиры, техники", "color": "#607D8B", "user_id": 0},
-            {"name": "Инвестиции", "description": "Фондовый рынок, вклады", "color": "#8BC34A", "user_id": 0}
+            {"name": "Продукты", "description": "Продукты питания", "color": "#4CAF50", "user_id": user_data.get('id', 1)},
+            {"name": "Транспорт", "description": "Общественный транспорт, такси", "color": "#2196F3", "user_id": user_data.get('id', 1)},
+            {"name": "Автомобиль", "description": "Топливо, ремонт, страховка", "color": "#FF9800", "user_id": user_data.get('id', 1)},
+            {"name": "Жилье", "description": "Квартплата, коммунальные услуги", "color": "#9C27B0", "user_id": user_data.get('id', 1)},
+            {"name": "Развлечения", "description": "Кино, рестораны, хобби", "color": "#E91E63", "user_id": user_data.get('id', 1)},
+            {"name": "Здоровье", "description": "Медицина, лекарства", "color": "#F44336", "user_id": user_data.get('id', 1)},
+            {"name": "Одежда", "description": "Одежда и обувь", "color": "#795548", "user_id": user_data.get('id', 1)},
+            {"name": "Отпуск", "description": "Путешествия и отдых", "color": "#00BCD4", "user_id": user_data.get('id', 1)},
+            {"name": "Ремонт", "description": "Ремонт квартиры, техники", "color": "#607D8B", "user_id": user_data.get('id', 1)},
+            {"name": "Инвестиции", "description": "Фондовый рынок, вклады", "color": "#8BC34A", "user_id": user_data.get('id', 1)}
         ]
 
         for cat_data in categories_expenses_data:
@@ -44,9 +45,9 @@ def init_db():
                 db.add(category)
 
         categories_incomes_data = [
-                {"name": "Зарплата", "description": "Основной доход", "color": "#4CAF50", "user_id": 0},
-                {"name": "Подработка", "description": "Дополнительный доход", "color": "#4CAF50", "user_id": 0},
-                {"name": "Проценты", "description": "Проценты по вкладам", "color": "#4CAF50", "user_id": 0},
+                {"name": "Зарплата", "description": "Основной доход", "color": "#4CAF50", "user_id": user_data.get('id', 1)},
+                {"name": "Подработка", "description": "Дополнительный доход", "color": "#4CAF50", "user_id": user_data.get('id', 1)},
+                {"name": "Проценты", "description": "Проценты по вкладам", "color": "#4CAF50", "user_id": user_data.get('id', 1)},
             ]
         for cat_data in categories_incomes_data:
             existing = db.query(models.CategoryIncome).filter(models.CategoryIncome.name == cat_data["name"]).first()
@@ -55,11 +56,11 @@ def init_db():
                 db.add(category)
         # Создание видов трат
         expense_types_data = [
-            {"name": "Ежемесячные траты", "description": "Регулярные ежемесячные расходы", "is_monthly": True, "user_id": 0},
-            {"name": "Автомобиль", "description": "Ремонт, страховка, техобслуживание", "is_monthly": False, "user_id": 0},
-            {"name": "Отпуск", "description": "Путешествия и отдых", "is_monthly": False, "user_id": 0},
-            {"name": "Ремонт", "description": "Ремонт квартиры и техники", "is_monthly": False, "user_id": 0},
-            {"name": "Инвестиции", "description": "Вложения в фондовый рынок", "is_monthly": False, "user_id": 0},
+            {"name": "Ежемесячные траты", "description": "Регулярные ежемесячные расходы", "is_monthly": True, "user_id": user_data.get('id', 1)},
+            {"name": "Автомобиль", "description": "Ремонт, страховка, техобслуживание", "is_monthly": False, "user_id": user_data.get('id', 1)},
+            {"name": "Отпуск", "description": "Путешествия и отдых", "is_monthly": False, "user_id": user_data.get('id', 1)},
+            {"name": "Ремонт", "description": "Ремонт квартиры и техники", "is_monthly": False, "user_id": user_data.get('id', 1)},
+            {"name": "Инвестиции", "description": "Вложения в фондовый рынок", "is_monthly": False, "user_id": user_data.get('id', 1)},
         ]
         for et_data in expense_types_data:
             existing = db.query(models.ExpenseType).filter(models.ExpenseType.name == et_data["name"]).first()

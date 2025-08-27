@@ -132,8 +132,10 @@ const loadCategories = async () => {
 const saveCategory = async () => {
   try {
     // Добавляем user_id из store при создании новой категории
+    console.log('Добавляем user_id из store при создании новой категории', authStore.user)
     if (!editingCategory.value && authStore.user?.id) {
       form.value.user_id = authStore.user.id
+      console.log('authStore: ', authStore.user.id)
     }
     
     if (editingCategory.value) {

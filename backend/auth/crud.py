@@ -5,6 +5,8 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
+import bcrypt
+bcrypt.__about__ = bcrypt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 

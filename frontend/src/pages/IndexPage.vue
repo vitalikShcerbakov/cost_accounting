@@ -243,12 +243,6 @@ const loadData = async () => {
 }
 const addIncome = async () => {
   try {
-    console.log('=== ДЕБАГ ИНФОРМАЦИЯ ===')
-    console.log('authStore.token:', authStore.token)
-    console.log('authStore.user:', authStore.user)
-    console.log('localStorage token:', localStorage.getItem('token'))
-    console.log('localStorage user:', localStorage.getItem('user'))
-    
     await loadData()
     showIncomeDialog.value = false
     const obj: IncomeCreate = {
@@ -257,17 +251,14 @@ const addIncome = async () => {
       date: newIncome.value.date + ' ' + new Date().toISOString().split('T')[1],
       category_id: newIncome.value.category_id
     }
-    console.log('перед тем как добавить доход ')
-    console.log('authStore ---', authStore.user)
     // Добавляем user_id только если пользователь авторизован
-    if (authStore.user && Number.isInteger(authStore.user.id)) {
+    if (authStore.user && authStore.user?.id) {
       obj.user_id = authStore.user.id
       console.log('Добавляем доход с user_id:', obj.user_id)
     } else {
       console.log('Пользователь не авторизован, user_id:', authStore.user)
     }
     
-    console.log('Отправляем данные дохода:', obj)
     await incomesApi.create(obj)
     $q.notify({
       type: 'positive',
@@ -302,7 +293,7 @@ const addExpense = async () => {
     }
     
     // Добавляем user_id только если пользователь авторизован
-    if (authStore.user && Number.isInteger(authStore.user.id)) {
+    if (authStore.user && authStore.user?.id) {
       obj.user_id = authStore.user.id
       console.log('Добавляем расход с user_id:', obj.user_id)
     } else {
