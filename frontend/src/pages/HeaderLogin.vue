@@ -2,11 +2,21 @@
   <div class="header_text">
     <div v-if="auth.user">
       <!-- <a class="header_text">{{ auth.user }} </a> -->
-      <button @click="logout"> Выйти </button>
+             <!-- Информация о пользователе и кнопка выхода -->
+        <div v-if="auth.user" class="row items-center q-gutter-sm">
+          <q-chip color="primary" text-color="white" icon="person">
+          </q-chip>
+          <q-btn
+            flat
+            round
+            icon="logout"
+            color="negative"
+            @click="logout"
+            title="Выйти"
+          />
+        </div>
     </div>
-    <div v-else>
-      <router-link to="/login"> Войти</router-link>
-    </div>
+    
   </div>
 </template>
 
