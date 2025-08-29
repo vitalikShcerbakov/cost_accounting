@@ -13,9 +13,11 @@ def get_category_expense(db: Session, category_id: int):
 
 
 def get_categories_expense(db: Session, skip: int = 0, limit: int = 100, user_id: Optional[int] = None):
-    query = db.query(models.CategoryExpense)
+    query = db.query(models.CategoryExpense).outerjoin(models.Expense)
     if user_id:
         query = query.filter(models.CategoryExpense.user_id == user_id)
+        query = query.group_by(models.CategoryExpense.id)
+        query = query.order_by(func.coalesce(func.count(models.Expense.id), 0).desc())
     return query.offset(skip).limit(limit).all()
 
 
