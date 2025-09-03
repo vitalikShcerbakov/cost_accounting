@@ -2,7 +2,6 @@
 """
 Скрипт для инициализации базы данных с начальными данными
 """
-
 from app import models
 from database import SessionLocal, engine
 
@@ -67,7 +66,6 @@ def init_db():
             if not existing:
                 expense_type = models.ExpenseType(**et_data)
                 db.add(expense_type)
-        
         db.commit()
         print("База данных успешно инициализирована!")
         # Вывод созданных данных

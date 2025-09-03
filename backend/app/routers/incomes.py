@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from database import get_db
-from auth.crud import get_current_active_user
+from auth.auth import get_current_active_user
 from auth.schemas import User
+from database import get_db
 
 router = APIRouter(prefix="/incomes", tags=["incomes"])
 
@@ -37,7 +37,7 @@ def read_incomes(
 
 @router.post("/", response_model=schemas.Income)
 def create_income(
-    income: schemas.IncomeCreate, 
+    income: schemas.IncomeCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -49,7 +49,7 @@ def create_income(
 
 @router.get("/{income_id}", response_model=schemas.Income)
 def read_income(
-    income_id: int, 
+    income_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -65,8 +65,8 @@ def read_income(
 
 @router.put("/{income_id}", response_model=schemas.Income)
 def update_income(
-    income_id: int, 
-    income: schemas.IncomeUpdate, 
+    income_id: int,
+    income: schemas.IncomeUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -77,7 +77,7 @@ def update_income(
         raise HTTPException(status_code=404, detail="Доход не найден")
     if db_income.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
-    
+
     # Устанавливаем user_id из токена аутентификации
     income.user_id = current_user.id
     db_income = crud.update_income(db, income_id=income_id, income=income)
@@ -86,7 +86,7 @@ def update_income(
 
 @router.delete("/{income_id}")
 def delete_income(
-    income_id: int, 
+    income_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -97,6 +97,6 @@ def delete_income(
         raise HTTPException(status_code=404, detail="Доход не найден")
     if db_income.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
-    
+
     db_income = crud.delete_income(db, income_id=income_id)
     return {"message": "Доход удален"}

@@ -3,8 +3,9 @@ from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey, Integer,
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
+from auth.models import Users  # noqa
 from database import Base
-from auth.models import Users
+
 
 class CategoryExpense(Base):
     __tablename__ = "categories_expenses"

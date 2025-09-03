@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from database import get_db
-from auth.crud import get_current_active_user
+from auth.auth import get_current_active_user
 from auth.schemas import User
+from database import get_db
 
 router = APIRouter(prefix="/expenses", tags=["expenses"])
 
@@ -39,7 +39,7 @@ def read_expenses(
 
 @router.post("/", response_model=schemas.Expense)
 def create_expense(
-    expense: schemas.ExpenseCreate, 
+    expense: schemas.ExpenseCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -51,7 +51,7 @@ def create_expense(
 
 @router.get("/{expense_id}", response_model=schemas.Expense)
 def read_expense(
-    expense_id: int, 
+    expense_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -67,8 +67,8 @@ def read_expense(
 
 @router.put("/{expense_id}", response_model=schemas.Expense)
 def update_expense(
-    expense_id: int, 
-    expense: schemas.ExpenseUpdate, 
+    expense_id: int,
+    expense: schemas.ExpenseUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -79,7 +79,7 @@ def update_expense(
         raise HTTPException(status_code=404, detail="Расход не найден")
     if db_expense.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
-    
+
     # Устанавливаем user_id из токена аутентификации
     expense.user_id = current_user.id
     db_expense = crud.update_expense(db, expense_id=expense_id, expense=expense)
@@ -88,7 +88,7 @@ def update_expense(
 
 @router.delete("/{expense_id}")
 def delete_expense(
-    expense_id: int, 
+    expense_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -99,6 +99,6 @@ def delete_expense(
         raise HTTPException(status_code=404, detail="Расход не найден")
     if db_expense.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
-    
+
     db_expense = crud.delete_expense(db, expense_id=expense_id)
     return {"message": "Расход удален"}
