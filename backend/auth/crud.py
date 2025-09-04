@@ -34,7 +34,8 @@ def authenticate_user(db: Session, username: str, password: str):
 
 def add_user(db: Session, user_data: UserRegistr):
     password_hash = get_password_hash(user_data.password)
-    data = user_data.dict()
+    data = user_data.model_dump()
+    # data = user_data.dict()
     del data['password']
     data['hashed_password'] = password_hash
     db_user = Users(**data)

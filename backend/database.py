@@ -1,8 +1,7 @@
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
@@ -18,9 +17,9 @@ class Settings(BaseSettings):
     def database_url(self) -> str:
         # return "sqlite:///./cost_accounting.db"
         return f"postgresql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
-
-    class Config:
-        env_file = ".env"
+    #
+    # class Config:
+    #     env_file = ".env"
 
 
 settings = Settings()

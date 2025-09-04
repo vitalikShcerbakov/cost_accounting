@@ -18,7 +18,7 @@ cur_user_dep = Annotated[User, Depends(get_current_active_user)]
 @router.post("/token")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: Session = Depends(get_db),
+        db: Session = Depends(get_db),
 ) -> Token:
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -39,15 +39,12 @@ async def get_me(current_user: cur_user_dep):
     return {"user": current_user}
 
 
-@router.post('/register')
+@router.post('/register', status_code=status.HTTP_201_CREATED)
 async def register_user(user_data: UserRegistr, db: Session = Depends(get_db)):
-    print('user_data.name: ', user_data.name)
     user = get_user(db=db, username=user_data.name)
-    print('user:', user)
     if user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail='Пользователь уже существует'
         )
-    print('user_datra: ', user_data)
     return add_user(db, user_data)

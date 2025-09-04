@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # Category schemas
@@ -26,8 +26,7 @@ class Category(CategoryBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ExpenseType schemas
@@ -55,8 +54,7 @@ class ExpenseType(ExpenseTypeBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Expense schemas
@@ -89,8 +87,7 @@ class Expense(ExpenseBase):
     categories_expense: Category
     expense_type: ExpenseType
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Income schemas
@@ -120,8 +117,7 @@ class Income(IncomeBase):
     updated_at: Optional[datetime] = None
     categories_income: Category
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Summary schemas
