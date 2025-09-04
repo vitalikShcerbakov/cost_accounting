@@ -1,11 +1,11 @@
 import pytest
-import uuid
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
-from fastapi.testclient import TestClient
-from main import app
+
 from database import Base, get_db
+from main import app
 
 # URL-адрес базы данных SQLite для тестирования
 SQLITE_DATABASE_URL = "sqlite:///./test_db.db"
@@ -49,21 +49,14 @@ def test_client(db_session):
     with TestClient(app) as test_client:
         yield test_client
 
+
 @pytest.fixture()
-def user_payload(): # user_id
+def user_payload():
     """Generate an updated user payload."""
     return {
-          "id": 0,
+          "id": 1,
           "name": "string",
           "email": "user@example.com",
           "is_active": True,
-          "password": "string"
-    }
-
-@pytest.fixture()
-def user_payload_token(): # user_id
-    """Generate an updated user payload."""
-    return {
-          "name": "string",
           "password": "string"
     }
